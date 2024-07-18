@@ -3,7 +3,7 @@
 
 // Importing necessary modules and components from various libraries
 import { zodResolver } from "@hookform/resolvers/zod"; // Resolver for integrating Zod with react-hook-form
-import { useForm } from "react-hook-form"; // Library for managing forms in React
+import { set, useForm } from "react-hook-form"; // Library for managing forms in React
 import { z } from "zod"; // Library for schema validation
 
 import { Button } from "../ui/button"; // Button component
@@ -12,6 +12,8 @@ import { Form } from "../ui/form"; // Form component
 import CustomFormField from "../CustomFormField"; // Custom form field component
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
+import { UserFormValidation } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 
 // Enum for different types of form fields
 export enum FormFieldType {
@@ -24,30 +26,44 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-// Define a schema for form validation using Zod
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
-
 // Define the PatientForm component
 const PatientForm = () => {
+  const Router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   // 1. Define your form using useForm hook from react-hook-form and zodResolver for validation
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema), // Integrate Zod for form validation
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation), // Integrate Zod for form validation
     defaultValues: {
-      username: "", // Set default value for username
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
   // 2. Define a submit handler function
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values
-    // ✅ This will be type-safe and validated
-    console.log(values); // Log form values to the console
+  async function onSubmit({
+    name,
+    email,
+    phone,
+  }: z.infer<typeof UserFormValidation>) {
+    setIsLoading(true);
+
+    try {
+      // const userData = {
+      //   name,
+      //   email,
+      //   phone,
+      // };
+
+      // const user = await createUser(userData);
+
+      // if (user) router.push(`/patiens/${user.id}/register`); {
+      //   console.log("User created successfully:", user);
+      // }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // Return the form JSX
@@ -59,7 +75,7 @@ const PatientForm = () => {
           <h1 className="header">Welcome 👋 </h1>
           <p className="text-dark-700">Schedule your first appointment</p>
         </section>
-      
+
         {/* Full Name Field */}
         <CustomFormField
           fieldType={FormFieldType.INPUT} // Specify the type of form field
@@ -93,7 +109,7 @@ const PatientForm = () => {
         />
 
         {/* Submit Button */}
-        <SubmitButton isLoading = {isLoading}>Get started</SubmitButton>
+        <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
     </Form>
   );
