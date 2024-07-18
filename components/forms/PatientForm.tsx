@@ -10,6 +10,8 @@ import { Button } from "../ui/button"; // Button component
 import { Form } from "../ui/form"; // Form component
 
 import CustomFormField from "../CustomFormField"; // Custom form field component
+import SubmitButton from "../SubmitButton";
+import { useState } from "react";
 
 // Enum for different types of form fields
 export enum FormFieldType {
@@ -31,6 +33,8 @@ const formSchema = z.object({
 
 // Define the PatientForm component
 const PatientForm = () => {
+
+  const [isLoading, setIsLoading] = useState(false);
   // 1. Define your form using useForm hook from react-hook-form and zodResolver for validation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema), // Integrate Zod for form validation
@@ -89,7 +93,7 @@ const PatientForm = () => {
         />
 
         {/* Submit Button */}
-        <Button type="submit">Submit</Button>
+        <SubmitButton isLoading = {isLoading}>Get started</SubmitButton>
       </form>
     </Form>
   );
