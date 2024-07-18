@@ -1,19 +1,19 @@
-// "use client" directive allows this file to be compiled as a module and makes it client-side rendering
+// Directive "use client" allows this file to be used for client-side rendering
 "use client";
 
-// Importing necessary modules and components from various libraries
+// Import necessary modules and components
 import { zodResolver } from "@hookform/resolvers/zod"; // Resolver for integrating Zod with react-hook-form
-import { set, useForm } from "react-hook-form"; // Library for managing forms in React
+import { useForm } from "react-hook-form"; // Library for managing forms in React
 import { z } from "zod"; // Library for schema validation
 
 import { Button } from "../ui/button"; // Button component
 import { Form } from "../ui/form"; // Form component
 
 import CustomFormField from "../CustomFormField"; // Custom form field component
-import SubmitButton from "../SubmitButton";
-import { useState } from "react";
-import { UserFormValidation } from "@/lib/validation";
-import { useRouter } from "next/navigation";
+import SubmitButton from "../SubmitButton"; // Submit button component
+import { useState } from "react"; // State hook for managing component state
+import { UserFormValidation } from "@/lib/validation"; // Validation schema for user form
+import { useRouter } from "next/navigation"; // Router hook for navigation
 
 // Enum for different types of form fields
 export enum FormFieldType {
@@ -28,9 +28,10 @@ export enum FormFieldType {
 
 // Define the PatientForm component
 const PatientForm = () => {
-  const Router = useRouter();
+  const Router = useRouter(); // Router hook instance for navigation
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State variable to manage loading state
+
   // 1. Define your form using useForm hook from react-hook-form and zodResolver for validation
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation), // Integrate Zod for form validation
@@ -47,22 +48,24 @@ const PatientForm = () => {
     email,
     phone,
   }: z.infer<typeof UserFormValidation>) {
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state to true
 
     try {
+      // Placeholder for API call to create user
       // const userData = {
       //   name,
       //   email,
       //   phone,
       // };
-
+      
+      // Placeholder for actual API call
       // const user = await createUser(userData);
 
-      // if (user) router.push(`/patiens/${user.id}/register`); {
-      //   console.log("User created successfully:", user);
-      // }
+      // Placeholder for redirecting to user-specific page upon successful user creation
+      // if (user) Router.push(`/patients/${user.id}/register`);
+      // console.log("User created successfully:", user);
     } catch (error) {
-      console.error(error);
+      console.error(error); // Log any errors that occur during the API call
     }
   }
 
@@ -101,11 +104,11 @@ const PatientForm = () => {
 
         {/* Phone Number Field */}
         <CustomFormField
-          fieldType={FormFieldType.PHONE_INPUT}
-          control={form.control}
-          name="phone"
-          label="Phone number"
-          placeholder="(555) 123-4567"
+          fieldType={FormFieldType.PHONE_INPUT} // Specify the type of form field
+          control={form.control} // Pass the form control
+          name="phone" // Set the name for the form field
+          label="Phone number" // Set the label for the form field
+          placeholder="(555) 123-4567" // Set the placeholder for the form field
         />
 
         {/* Submit Button */}
